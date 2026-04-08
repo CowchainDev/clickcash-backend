@@ -1,0 +1,1 @@
+{"version":3,"file":"prices.module.js","sourceRoot":"","sources":["../../src/prices/prices.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,0EAAsE;AACtE,qDAAiD;AACjD,qDAAiD;AAM1C,IAAM,YAAY,GAAlB,MAAM,YAAY;CAAG,CAAA;AAAf,oCAAY;uBAAZ,YAAY;IAJxB,IAAA,eAAM,EAAC;QACN,OAAO,EAAE,CAAC,sCAAiB,CAAC;QAC5B,SAAS,EAAE,CAAC,8BAAa,EAAE,8BAAa,CAAC;KAC1C,CAAC;GACW,YAAY,CAAG"}
