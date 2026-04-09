@@ -82,3 +82,48 @@ model SigmaHistory {
 
   @@index([recordedAt])
 }
+
+model BacktestRun {
+  id              String    @id @default(uuid())
+  name            String?
+  status          String    @default("RUNNING")
+
+  startTime       DateTime
+  endTime         DateTime
+  numUsers        Int
+  speedMultiplier Float     @default(120)
+
+  totalBets       Int       @default(0)
+  totalWon        Int       @default(0)
+  totalLost       Int       @default(0)
+  totalStaked     Decimal   @default(0) @db.Decimal(18, 2)
+  totalPaidOut    Decimal   @default(0) @db.Decimal(18, 2)
+  platformPnl     Decimal   @default(0) @db.Decimal(18, 2)
+  peakExposure    Decimal   @default(0) @db.Decimal(18, 2)
+
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+
+  snapshots       BacktestSnapshot[]
+}
+
+model BacktestSnapshot {
+  id              String      @id @default(uuid())
+  runId           String
+  run             BacktestRun @relation(fields: [runId], references: [id])
+
+  simTimeMs       BigInt
+  emaPrice        Decimal     @db.Decimal(18, 2)
+  platformPnl     Decimal     @db.Decimal(18, 2)
+  exposure        Decimal     @db.Decimal(18, 2)
+  activeBets      Int
+  totalBets       Int
+  winRate         Float
+  avgMultiplier   Float
+  liabilityUp     Decimal     @db.Decimal(18, 2)
+  liabilityDown   Decimal     @db.Decimal(18, 2)
+
+  createdAt       DateTime    @default(now())
+
+  @@index([runId, simTimeMs])
+}

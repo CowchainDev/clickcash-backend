@@ -5,6 +5,7 @@ import { PricesModule } from './prices/prices.module';
 import { DatabaseModule } from './database/database.module';
 import { RedisModule } from './redis/redis.module';
 import { GameModule } from './game/game.module';
+import { BacktestModule } from './backtest/backtest.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { GameModule } from './game/game.module';
     PairsModule,
     PricesModule,
     GameModule,
+    BacktestModule,
   ],
 })
 export class AppModule {}
