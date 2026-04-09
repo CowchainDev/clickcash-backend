@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  address       String?  @unique
+  nickname      String?
+  balance       Decimal  @default(1000) @db.Decimal(18, 2)
+  sessionLoss   Decimal  @default(0) @db.Decimal(18, 2)
+  lastBetAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bets          Bet[]
+}
+
+model Bet {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+
+  cellLow         Decimal   @db.Decimal(18, 2)
+  cellHigh        Decimal   @db.Decimal(18, 2)
+  cellSide        String
+
+  slotTimestamp   DateTime
+
+  stake           Decimal   @db.Decimal(18, 2)
+  multiplier      Decimal   @db.Decimal(8, 2)
+  potentialPayout Decimal   @db.Decimal(18, 2)
+
+  placedPrice     Decimal   @db.Decimal(18, 2)
+  settlementPrice Decimal?  @db.Decimal(18, 2)
+
+  status          BetStatus @default(ACTIVE)
+  placedAt        DateTime  @default(now())
+  settledAt       DateTime?
+
+  @@index([userId, status])
+  @@index([slotTimestamp, status])
+  @@index([status])
+}
+
+enum BetStatus {
+  ACTIVE
+  WON
+  LOST
+}
+
+model SlotInventory {
+  id              String   @id @default(uuid())
+  slotTimestamp   DateTime @unique
+  liabilityUp     Decimal  @default(0) @db.Decimal(18, 2)
+  liabilityDown   Decimal  @default(0) @db.Decimal(18, 2)
+  liabilityCenter Decimal  @default(0) @db.Decimal(18, 2)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slotTimestamp])
+}
+
+model CellLiability {
+  id              String   @id @default(uuid())
+  cellKey         String   @unique
+  liability       Decimal  @default(0) @db.Decimal(18, 2)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([cellKey])
+}
+
+model SigmaHistory {
+  id        String   @id @default(uuid())
+  sigma10s  Float
+  recordedAt DateTime @default(now())
+
+  @@index([recordedAt])
+}
