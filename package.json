@@ -6,9 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "node node_modules/typescript/bin/tsc -p tsconfig.build.json && npx prisma generate && npx prisma migrate deploy",
+    "build": "node node_modules/typescript/bin/tsc -p tsconfig.build.json && npx prisma generate",
+    "start": "npx prisma migrate deploy && node dist/main",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node dist/main",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
